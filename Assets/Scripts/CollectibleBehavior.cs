@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CoinBehavior : MonoBehaviour
+public class CollectibleBehavior : MonoBehaviour
 {
     MeshRenderer myMeshRenderer;
     [SerializeField]
@@ -16,7 +16,7 @@ public class CoinBehavior : MonoBehaviour
     }
     public void Highlight()
     {
-        // Change the material to highlightMat when the coin is highlighted
+        // Change the material to highlightMat when the collectible is highlighted
         myMeshRenderer.material = highlightMat;
     }
     public void Unhighlight()
@@ -26,9 +26,9 @@ public class CoinBehavior : MonoBehaviour
 
     public void Collect(PlayerBehavior player)
     {
-        // Add the value of the coin to the player's score or inventory
-        Debug.Log("Collected " + value + " coins!");
-        Destroy(gameObject); // Destroy the coin after collection
+        // Add the value of the collectible to the player's score or inventory
+        Debug.Log("Collected " + value + " points!");
+        Destroy(gameObject); // Destroy the collectible after collection
     }
     
 }

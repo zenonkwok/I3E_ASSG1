@@ -2,15 +2,14 @@ using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
 {
-    public CoinBehavior currentCoin;
+    public CollectibleBehavior currentCollectible;
     public DoorBehavior currentDoor;
 
     [SerializeField]
-    GameObject projectile;
-
+    Transform spawnPoint;
     [SerializeField]
 
-    //float interactionDistance = 5f;
+    float interactionDistance = 5f;
 
     bool canInteract = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -20,10 +19,10 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (canInteract)
         {
-            if (currentCoin != null)
+            if (currentCollectible != null)
             {
-                Debug.Log("Interacting with coin");
-                currentCoin.Collect(this);
+                Debug.Log("Interacting with collectible");
+                currentCollectible.Collect(this);
             }
             else if (currentDoor != null)
             {
@@ -38,12 +37,12 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Collectible"))
         {
-            Debug.Log("OnTriggerEnter called with: " + other.gameObject.name);
             canInteract = true;
-            currentCoin = other.gameObject.GetComponent<CoinBehavior>();
+            currentCollectible = other.gameObject.GetComponent<CollectibleBehavior>();
         }
         else if (other.gameObject.CompareTag("Door"))
         {
+            Debug.Log("OnTriggerEnter called with: " + other.gameObject.name);
             canInteract = true;
             currentDoor = other.gameObject.GetComponent<DoorBehavior>();
         }
@@ -53,30 +52,35 @@ public class PlayerBehavior : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Collectible"))
         {
-            currentCoin = null;
+            currentCollectible = null;
+            canInteract = false;
+        }
+        else if (other.gameObject.CompareTag("Door"))
+        {
+            currentDoor = null;
             canInteract = false;
         }
         
     }
 
-    /*void Update()
+    void Update()
     {
         RaycastHit hitInfo;
+        Debug.DrawRay(spawnPoint.position, spawnPoint.forward * interactionDistance, Color.red);
 
         if (Physics.Raycast(spawnPoint.position, spawnPoint.forward, out hitInfo, interactionDistance))
         {
-            if (currentCoin != null)
+            if (currentCollectible != null)
             {
-                currentCoin.Unhighlight();
+                currentCollectible.Unhighlight();
             }
             canInteract = true;
-            currentCoin = hitInfo.collider.gameObject.GetComponent<CoinBehavior>();
-            currentCoin.Highlight();
+            currentCollectible = hitInfo.collider.gameObject.GetComponent<CollectibleBehavior>();
 
 
             if (hitInfo.collider.gameObject.CompareTag("Collectible"))
             {
-                currentCoin = hitInfo.collider.GetComponent<CoinBehavior>();
+                currentCollectible = hitInfo.collider.GetComponent<CollectibleBehavior>();
                 canInteract = true;
             }
             else if (hitInfo.collider.CompareTag("Door"))
@@ -86,18 +90,18 @@ public class PlayerBehavior : MonoBehaviour
             }
             else
             {
-                currentCoin = null;
+                currentCollectible = null;
                 currentDoor = null;
                 canInteract = false;
             }
         }
         else
         {
-            currentCoin = null;
+            currentCollectible = null;
             currentDoor = null;
             canInteract = false;
         }
-    }*/
+    }
 }
 
 
