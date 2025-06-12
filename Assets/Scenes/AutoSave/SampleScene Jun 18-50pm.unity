@@ -21263,7 +21263,7 @@ Transform:
   m_GameObject: {fileID: 456660508}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0067825317, y: 0.033, z: 0.78478813}
+  m_LocalPosition: {x: -0.0067825317, y: -0.21731663, z: 0.78478813}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -73663,8 +73663,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e651896abc2a73f43985864c4eb3dfca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightMat: {fileID: 2100000, guid: a167573ac5b2bba4b95761b5811b1622, type: 2}
-  originalMat: {fileID: 2100000, guid: 3c2972935a179a949b64ac674690c34c, type: 2}
+  highlightMat: {fileID: 0}
+  originalMat: {fileID: 0}
   value: 10
   collectibleType: Key
 --- !u!1001 &1390531964
@@ -79176,7 +79176,6 @@ MonoBehaviour:
   spawnPoint: {fileID: 456660509}
   pointsText: {fileID: 1980659051}
   totalPoints: 0
-  Keys: []
 --- !u!54 &1946090797
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -79424,7 +79423,7 @@ GameObject:
   - component: {fileID: 1980659052}
   - component: {fileID: 1980659051}
   m_Layer: 5
-  m_Name: scoreText
+  m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

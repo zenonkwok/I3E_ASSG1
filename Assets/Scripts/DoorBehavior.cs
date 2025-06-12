@@ -3,8 +3,32 @@ using UnityEngine;
 public class DoorBehavior : MonoBehaviour
 {
     public bool DoorOpen = false;
+
+    public string requiredKeyName;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Interact()
+    {
+        if (requiredKeyName != null && requiredKeyName != "")
+        {
+            // Check if the player has the required key
+            PlayerBehavior player = FindFirstObjectByType<PlayerBehavior>();
+            if (player != null && player.Keys.Contains(requiredKeyName))
+            {
+                ToggleDoor();
+            }
+            else
+            {
+                Debug.Log("You need the key: " + requiredKeyName + " to open this door.");
+            }
+        }
+        else
+        {
+            ToggleDoor();
+        }
+    }
+
+    public void ToggleDoor()
     {
         if (DoorOpen == false)
         {
@@ -20,7 +44,7 @@ public class DoorBehavior : MonoBehaviour
             transform.eulerAngles = doorRotation; // Apply the new rotation to the door
             DoorOpen = false; // Set the door state to closed
         }
-        
+
     }
 
 

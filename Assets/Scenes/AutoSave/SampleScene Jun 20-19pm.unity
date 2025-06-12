@@ -89421,6 +89421,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 720335660}
     m_Modifications:
+    - target: {fileID: 1177645262512725345, guid: 7265f42355f1d78499f115ae972e1399, type: 3}
+      propertyPath: requiredKeyName
+      value: black_Key
+      objectReference: {fileID: 0}
     - target: {fileID: 3583358279838681777, guid: 7265f42355f1d78499f115ae972e1399, type: 3}
       propertyPath: m_Name
       value: doorHinge

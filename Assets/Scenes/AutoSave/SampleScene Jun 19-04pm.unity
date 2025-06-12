@@ -79176,7 +79176,6 @@ MonoBehaviour:
   spawnPoint: {fileID: 456660509}
   pointsText: {fileID: 1980659051}
   totalPoints: 0
-  Keys: []
 --- !u!54 &1946090797
 Rigidbody:
   m_ObjectHideFlags: 0

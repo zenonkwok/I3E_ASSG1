@@ -21263,7 +21263,7 @@ Transform:
   m_GameObject: {fileID: 456660508}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0067825317, y: 0.033, z: 0.78478813}
+  m_LocalPosition: {x: -0.0067825317, y: -0.21731663, z: 0.78478813}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -73663,10 +73663,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e651896abc2a73f43985864c4eb3dfca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightMat: {fileID: 2100000, guid: a167573ac5b2bba4b95761b5811b1622, type: 2}
-  originalMat: {fileID: 2100000, guid: 3c2972935a179a949b64ac674690c34c, type: 2}
+  highlightMat: {fileID: 0}
   value: 10
-  collectibleType: Key
 --- !u!1001 &1390531964
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79173,10 +79171,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentCollectible: {fileID: 0}
   currentDoor: {fileID: 0}
-  spawnPoint: {fileID: 456660509}
-  pointsText: {fileID: 1980659051}
   totalPoints: 0
-  Keys: []
+  spawnPoint: {fileID: 456660509}
+  interactionDistance: 5
 --- !u!54 &1946090797
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -79424,7 +79421,7 @@ GameObject:
   - component: {fileID: 1980659052}
   - component: {fileID: 1980659051}
   m_Layer: 5
-  m_Name: scoreText
+  m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79446,7 +79443,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -815, y: 471}
+  m_AnchoredPosition: {x: -315.64496, y: -245.94485}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1980659051
@@ -79496,8 +79493,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -79534,7 +79531,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -236.89417, w: -55.48877}
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

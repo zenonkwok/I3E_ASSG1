@@ -5,8 +5,11 @@ public class CollectibleBehavior : MonoBehaviour
     MeshRenderer myMeshRenderer;
     [SerializeField]
     Material highlightMat;
+    [SerializeField]
     Material originalMat;
     public int value = 10;
+
+    public string collectibleType = "Key";
 
     void Start()
     {

@@ -1,4 +1,6 @@
 using UnityEngine;
+using TMPro;
+using System.Collections.Generic;
 
 public class PlayerBehavior : MonoBehaviour
 {
@@ -8,12 +10,21 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField]
     Transform spawnPoint;
     [SerializeField]
+    TextMeshProUGUI pointsText;
 
     float interactionDistance = 5f;
-
+    public int totalPoints = 0;
     bool canInteract = false;
+
+    public List<string> Keys = new List<string>();
+
+    public List<string> Collectibles = new List<string>();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    
+
+    void Start()
+    {
+        pointsText.text = "Points: " + totalPoints.ToString();
+    }
     
     void OnInteract()
     {
@@ -22,7 +33,17 @@ public class PlayerBehavior : MonoBehaviour
             if (currentCollectible != null)
             {
                 Debug.Log("Interacting with collectible");
+                // Checking if collectible is a key
+                if (currentCollectible.collectibleType == "Key")
+                {
+                    Keys.Add(currentCollectible.name);
+                    Debug.Log("Collected key: " + currentCollectible.name);
+                }
+
+
                 currentCollectible.Collect(this);
+                totalPoints += currentCollectible.value; // Assuming CollectibleBehavior has a value property
+                pointsText.text = "Points: " + totalPoints.ToString();
             }
             else if (currentDoor != null)
             {
@@ -73,6 +94,7 @@ public class PlayerBehavior : MonoBehaviour
             if (currentCollectible != null)
             {
                 currentCollectible.Unhighlight();
+                currentCollectible = null;
             }
             canInteract = true;
             currentCollectible = hitInfo.collider.gameObject.GetComponent<CollectibleBehavior>();
@@ -81,6 +103,10 @@ public class PlayerBehavior : MonoBehaviour
             if (hitInfo.collider.gameObject.CompareTag("Collectible"))
             {
                 currentCollectible = hitInfo.collider.GetComponent<CollectibleBehavior>();
+                if (currentCollectible != null)
+                {
+                    currentCollectible.Highlight();
+                }
                 canInteract = true;
             }
             else if (hitInfo.collider.CompareTag("Door"))
