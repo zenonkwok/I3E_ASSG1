@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7394945900992452434}
   m_Layer: 0
   m_Name: cube_Wall
-  m_TagString: Untagged
+  m_TagString: Breakable Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,7 +117,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7157587369999374896}
   serializedVersion: 4
-  m_Mass: 100
+  m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

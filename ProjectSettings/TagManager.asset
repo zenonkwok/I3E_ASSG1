@@ -7,14 +7,17 @@ TagManager:
   - CinemachineTarget
   - Door
   - Collectible
+  - Cannon
+  - Projectile
+  - Breakable Wall
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - No Entry
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 

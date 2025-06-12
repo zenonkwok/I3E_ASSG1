@@ -7,6 +7,8 @@ public class PlayerBehavior : MonoBehaviour
     public CollectibleBehavior currentCollectible;
     public DoorBehavior currentDoor;
 
+    public CannonBehavior currentCannon;
+
     [SerializeField]
     Transform spawnPoint;
     [SerializeField]
@@ -39,7 +41,11 @@ public class PlayerBehavior : MonoBehaviour
                     Keys.Add(currentCollectible.name);
                     Debug.Log("Collected key: " + currentCollectible.name);
                 }
-
+                else if (currentCollectible.collectibleType == "Collectible")
+                {
+                    Collectibles.Add(currentCollectible.name);
+                    Debug.Log("Collected collectible: " + currentCollectible.name);
+                }
 
                 currentCollectible.Collect(this);
                 totalPoints += currentCollectible.value; // Assuming CollectibleBehavior has a value property
@@ -49,6 +55,12 @@ public class PlayerBehavior : MonoBehaviour
             {
                 Debug.Log("Interacting with door");
                 currentDoor.Interact();
+            }
+
+            else if (currentCannon != null)
+            {
+                Debug.Log("Firing Cannon");
+                currentCannon.Fire();
             }
         }
         
@@ -67,6 +79,12 @@ public class PlayerBehavior : MonoBehaviour
             canInteract = true;
             currentDoor = other.gameObject.GetComponent<DoorBehavior>();
         }
+        else if (other.gameObject.CompareTag("Cannon"))
+        {
+            Debug.Log("OnTriggerEnter called with: " + other.gameObject.name);
+            canInteract = true;
+            currentCannon = other.gameObject.GetComponent<CannonBehavior>();
+        }
     }
 
     void OnTriggerExit(Collider other)
@@ -80,6 +98,12 @@ public class PlayerBehavior : MonoBehaviour
         {
             currentDoor = null;
             canInteract = false;
+        }
+        else if (other.gameObject.CompareTag("Cannon"))
+        {
+            Debug.Log("OnTriggerEnter called with: " + other.gameObject.name);
+            canInteract = true;
+            currentCannon = other.gameObject.GetComponent<CannonBehavior>();
         }
         
     }
@@ -114,10 +138,16 @@ public class PlayerBehavior : MonoBehaviour
                 currentDoor = hitInfo.collider.GetComponent<DoorBehavior>();
                 canInteract = true;
             }
+            else if (hitInfo.collider.CompareTag("Cannon"))
+            {
+                currentCannon = hitInfo.collider.GetComponent<CannonBehavior>();
+                canInteract = true;
+            }
             else
             {
                 currentCollectible = null;
                 currentDoor = null;
+                currentCannon = null;
                 canInteract = false;
             }
         }
@@ -125,6 +155,7 @@ public class PlayerBehavior : MonoBehaviour
         {
             currentCollectible = null;
             currentDoor = null;
+            currentCannon = null;
             canInteract = false;
         }
     }
