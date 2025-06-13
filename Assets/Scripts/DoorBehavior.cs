@@ -3,8 +3,10 @@ using UnityEngine;
 public class DoorBehavior : MonoBehaviour
 {
     public bool DoorOpen = false;
-
-    public string requiredKeyName;
+    [SerializeField]
+    string requiredKeyName;
+    [SerializeField]
+    float autoCloseDistance = 5f; // Distance at which the door will automatically close
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void Interact()
@@ -19,7 +21,7 @@ public class DoorBehavior : MonoBehaviour
             }
             else
             {
-                Debug.Log("You need the key: " + requiredKeyName + " to open this door.");
+                player.Popup("You need the key: " + requiredKeyName + " to open this door.");
             }
         }
         else
@@ -47,5 +49,21 @@ public class DoorBehavior : MonoBehaviour
 
     }
 
+    void Update()
+    {
+        if (DoorOpen)
+        {
+            PlayerBehavior player = FindFirstObjectByType<PlayerBehavior>();
+            if (player != null)
+            {
+                float distance = Vector3.Distance(transform.position, player.transform.position);
+                if (distance > autoCloseDistance)
+                {
+                    ToggleDoor();
+                }  
+            }
+            
+        }
+    }
 
 }

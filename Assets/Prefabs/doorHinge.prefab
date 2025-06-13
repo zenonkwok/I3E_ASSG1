@@ -68,6 +68,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DoorOpen: 0
+  requiredKeyName: 
+  autoCloseDistance: 15
 --- !u!1001 &8662609659947137425
 PrefabInstance:
   m_ObjectHideFlags: 0

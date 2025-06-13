@@ -10,6 +10,8 @@ TagManager:
   - Cannon
   - Projectile
   - Breakable Wall
+  - Hazard
+  - Destroyable
   layers:
   - Default
   - TransparentFX

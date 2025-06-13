@@ -22,12 +22,12 @@ public class CannonBehavior : MonoBehaviour
             Vector3 fireForce = spawnPoint.forward * fireStrength;
 
             newProjectile.GetComponent<Rigidbody>().AddForce(fireForce);
-            
+
             player.Collectibles.Remove("cannonball");
         }
         else
         {
-            Debug.Log("You need a cannonball to fire the cannon.");
+            player.Popup("You need a cannonball to fire the cannon.");
         }
     }
 }

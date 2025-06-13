@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 5144678227700478499}
   - component: {fileID: 6593948539638333808}
   - component: {fileID: 6907280779693601399}
+  - component: {fileID: 7970367012723459067}
   m_Layer: 0
   m_Name: lazer
-  m_TagString: Untagged
+  m_TagString: Hazard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -110,3 +111,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+--- !u!114 &7970367012723459067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1957038132504109553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd77e20c206c06c4093839c6293aaf4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DamageAmount: -10
+  TickRate: 0.5
+  InvulnerabilityItem: 
