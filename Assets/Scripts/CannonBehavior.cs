@@ -9,6 +9,12 @@ public class CannonBehavior : MonoBehaviour
     [SerializeField]
     float fireStrength = 2f;
 
+    AudioSource cannonAudioSource;
+
+    void Start()
+    {
+        cannonAudioSource = GetComponent<AudioSource>();
+    }
 
     public void Fire()
     {
@@ -24,6 +30,8 @@ public class CannonBehavior : MonoBehaviour
             newProjectile.GetComponent<Rigidbody>().AddForce(fireForce);
 
             player.Collectibles.Remove("cannonball");
+
+            cannonAudioSource.Play();
         }
         else
         {

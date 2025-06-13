@@ -8,7 +8,13 @@ public class DoorBehavior : MonoBehaviour
     [SerializeField]
     float autoCloseDistance = 5f; // Distance at which the door will automatically close
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    AudioSource doorAudioSource;
+
+    void Start()
+    {
+        doorAudioSource = GetComponent<AudioSource>();
+    }
+
     public void Interact()
     {
         if (requiredKeyName != null && requiredKeyName != "")
@@ -46,6 +52,7 @@ public class DoorBehavior : MonoBehaviour
             transform.eulerAngles = doorRotation; // Apply the new rotation to the door
             DoorOpen = false; // Set the door state to closed
         }
+        doorAudioSource.Play();
 
     }
 

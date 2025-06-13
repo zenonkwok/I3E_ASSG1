@@ -8,11 +8,17 @@ public class DestroyableBehavior : MonoBehaviour
     [SerializeField]
     Material originalMat;
 
+    [SerializeField]
+    AudioClip destroySound;
+    AudioSource destroyableAudioSource;
+
     void Start()
     {
         myMeshRenderer = GetComponent<MeshRenderer>();
-        
+
         originalMat = myMeshRenderer.material;
+        
+        destroyableAudioSource = GetComponent<AudioSource>();
     }
 
     public void Highlight()
@@ -27,6 +33,8 @@ public class DestroyableBehavior : MonoBehaviour
 
     public void DestroyObject()
     {
+        AudioSource.PlayClipAtPoint(destroySound, transform.position);
+        destroyableAudioSource.Play();
         Destroy(gameObject);
     }
 }

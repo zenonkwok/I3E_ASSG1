@@ -7,12 +7,17 @@ public class CollectibleBehavior : MonoBehaviour
     Material highlightMat;
     [SerializeField]
     Material originalMat;
+    [SerializeField]
+    AudioClip collectSound;
+    public string collectibleType = "Key";
     public int value = 10;
 
-    public string collectibleType = "Key";
+    AudioSource CollectibleAudioSource;
 
     void Start()
     {
+        CollectibleAudioSource = GetComponent<AudioSource>();
+
         myMeshRenderer = GetComponent<MeshRenderer>();
         
         originalMat = myMeshRenderer.material;
@@ -30,6 +35,8 @@ public class CollectibleBehavior : MonoBehaviour
     public void Collect(PlayerBehavior player)
     {
         // Add the value of the collectible to the player's score or inventory
+        AudioSource.PlayClipAtPoint(collectSound, transform.position);
+        CollectibleAudioSource.Play();
         Debug.Log("Collected " + value + " points!");
         Destroy(gameObject); // Destroy the collectible after collection
     }

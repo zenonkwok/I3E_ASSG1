@@ -157,8 +157,21 @@ public class PlayerBehavior : MonoBehaviour
     {
         health = maxHealth; // Reset health to maximum
         healthText.text = "Health: " + health.ToString();
-        Debug.Log("Respawning player at respawn point");
-        transform.position = respawnPoint.position; // Reset player position to spawn point
+        Debug.Log("Respawning player at respawn point"); 
+        //transform.position = respawnPoint.position; // Reset player position to spawn point
+
+        var controller = GetComponent<CharacterController>();
+        if (controller != null)
+        {
+            controller.enabled = false;
+            transform.position = respawnPoint.position;
+            controller.enabled = true;
+        }
+        else
+        {
+            transform.position = respawnPoint.position;
+        }
+
         deathCount++;
     }
 

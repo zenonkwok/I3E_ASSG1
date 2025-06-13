@@ -11,6 +11,12 @@ public class HazardBehavior : MonoBehaviour
     [SerializeField]
     string InvulnerabilityItem = null;
 
+    AudioSource hazardAudioSource;
+
+    void Start()
+    {
+        hazardAudioSource = GetComponent<AudioSource>();
+    }
     private Coroutine damageCoroutine;
 
     public void StartHazardDamage(PlayerBehavior player)
@@ -48,6 +54,7 @@ public class HazardBehavior : MonoBehaviour
             else
             {
                 player.HazardDamage(DamageAmount);
+                hazardAudioSource.Play();
                 yield return new WaitForSeconds(TickRate);
             }
             
