@@ -12,6 +12,7 @@ public class PlayerBehavior : MonoBehaviour
     public CannonBehavior currentCannon;
     public HazardBehavior currentHazard;
     public DestroyableBehavior currentDestroyable;
+    public RoundtableBehavior currentRoundtable;
 
 
     // Serialized fields for Unity Editor
@@ -26,13 +27,24 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI popupText; // For the UI text that displays popups
     [SerializeField]
+    TextMeshProUGUI totalCollectiblesText; // For the UI text that displays total collectibles
+    [SerializeField]
+    TextMeshProUGUI endingText; // For the UI text that displays the ending message
+    [SerializeField]
+    UnityEngine.UI.Image endingScreen; // For the UI background on the ending screen
+    [SerializeField]
     UnityEngine.UI.Image overlay;
+    [SerializeField]
+    UnityEngine.UI.Image popupBackground;
 
     // Additional fields for player's behavior
     float interactionDistance = 5f; // Distance within which the player can interact with objects via raycast
     public int totalPoints = 0; // Total points collected by the player
     public int health = 100;  // Player's health
     public int maxHealth = 100; // Maximum health of the player
+    public int deathCount = 0; // Number of times the player has died
+    public int totalCollectibles = 9; // Total number of collectibles in the game
+    public int collectiblesCollected = 0; // Number of collectibles collected by the player
     bool canInteract = false;   // Whether the focused object can be interacted with
 
     // Variables for damage overlay
@@ -50,12 +62,18 @@ public class PlayerBehavior : MonoBehaviour
     {
         pointsText.text = "Points: " + totalPoints.ToString();
         healthText.text = "Health: " + health.ToString();
+        totalCollectiblesText.text = collectiblesCollected.ToString() + "/" + totalCollectibles.ToString();
         overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 0);
+        popupBackground.gameObject.SetActive(true);
+        endingScreen.gameObject.SetActive(false);
+        endingText.gameObject.SetActive(false);
     }
 
     public void Popup(string uiText)
     {
         popupText.text = uiText;
+        popupText.gameObject.SetActive(true);
+        popupBackground.gameObject.SetActive(true);
     }
 
     void OnInteract()
@@ -79,7 +97,14 @@ public class PlayerBehavior : MonoBehaviour
 
                 currentCollectible.Collect(this);
                 totalPoints += currentCollectible.value; // Assuming CollectibleBehavior has a value property
+                collectiblesCollected++;
                 pointsText.text = "Points: " + totalPoints.ToString();
+                totalCollectiblesText.text = collectiblesCollected.ToString() + "/" + totalCollectibles.ToString();
+
+                if (collectiblesCollected >= totalCollectibles)
+                {
+                    CompleteGame();
+                }
             }
             else if (currentDoor != null)
             {
@@ -96,6 +121,19 @@ public class PlayerBehavior : MonoBehaviour
             {
                 Debug.Log("Destroying object");
                 currentDestroyable.DestroyObject();
+            }
+            else if (currentRoundtable != null)
+            {
+                Debug.Log("Interacting with roundtable");
+                if (currentRoundtable.items_Placed)
+                {
+                    currentRoundtable.Summon();
+                }
+                else
+                {
+                    currentRoundtable.PlaceItems(this);
+                }
+
             }
         }
 
@@ -121,6 +159,7 @@ public class PlayerBehavior : MonoBehaviour
         healthText.text = "Health: " + health.ToString();
         Debug.Log("Respawning player at respawn point");
         transform.position = respawnPoint.position; // Reset player position to spawn point
+        deathCount++;
     }
 
     void OnTriggerEnter(Collider other)
@@ -151,6 +190,14 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
+    void CompleteGame()
+    {
+        endingScreen.gameObject.SetActive(true);
+        endingText.gameObject.SetActive(true);
+        endingText.text = "Congratulations! You have completed the game.\n" + "Total Deaths: " + deathCount.ToString();
+        popupBackground.gameObject.SetActive(false);
+        popupText.gameObject.SetActive(false);
+    }
 
     void Update()
     {
@@ -174,6 +221,8 @@ public class PlayerBehavior : MonoBehaviour
                     currentCollectible.Highlight();
                 }
                 canInteract = true;
+                Popup("Press E to collect: " + currentCollectible.name);
+
             }
             else if (hitInfo.collider.CompareTag("Door"))
             {
@@ -189,6 +238,17 @@ public class PlayerBehavior : MonoBehaviour
             {
                 currentDestroyable = hitInfo.collider.GetComponent<DestroyableBehavior>();
                 canInteract = true;
+                Popup("Press E to destroy this object.");
+            }
+            else if (hitInfo.collider.CompareTag("Roundtable"))
+            {
+                currentRoundtable = hitInfo.collider.GetComponent<RoundtableBehavior>();
+                canInteract = true;
+                //Popup("Press E to place down items.");
+            }
+            else if (hitInfo.collider.CompareTag("Warning") && !Collectibles.Contains("magic_Ring"))
+            {
+                Popup("Warning: Toxic Waste Ahead. You need a magic_Ring to proceed safely.");
             }
             else
             {
@@ -196,7 +256,10 @@ public class PlayerBehavior : MonoBehaviour
                 currentDoor = null;
                 currentCannon = null;
                 currentDestroyable = null;
+                currentRoundtable = null;
                 canInteract = false;
+                popupBackground.gameObject.SetActive(false);
+                popupText.gameObject.SetActive(false);
             }
         }
         else
@@ -205,7 +268,10 @@ public class PlayerBehavior : MonoBehaviour
             currentDoor = null;
             currentCannon = null;
             currentDestroyable = null;
+            currentRoundtable = null;
             canInteract = false;
+            popupBackground.gameObject.SetActive(false);
+            popupText.gameObject.SetActive(false);
         }
 
 
@@ -218,6 +284,7 @@ public class PlayerBehavior : MonoBehaviour
                 float tempAlpha = overlay.color.a;
                 tempAlpha -= Time.deltaTime * fadeSpeed;
                 overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, tempAlpha);
+                popupText.gameObject.SetActive(false);
             }
         }
     }

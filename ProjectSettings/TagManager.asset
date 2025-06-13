@@ -12,6 +12,8 @@ TagManager:
   - Breakable Wall
   - Hazard
   - Destroyable
+  - Roundtable
+  - Warning
   layers:
   - Default
   - TransparentFX

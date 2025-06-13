@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 2915179522992456013}
   - component: {fileID: 7503538755313199988}
   - component: {fileID: 1894207667835557627}
+  - component: {fileID: -7648165426272767127}
   m_Layer: 0
   m_Name: roundtable
-  m_TagString: Untagged
+  m_TagString: Roundtable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ad4deae83de49a7479116e398f83a3c6, type: 2}
+  - {fileID: 2100000, guid: dbcdd6eeb918784468e95a9c2c05d66a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,3 +110,15 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -127990876336822857, guid: 2fcf8584e998fd349aff79ea4ad7d11f, type: 3}
+--- !u!114 &-7648165426272767127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2761994134938256642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b9a7acab0477dd4fbd8a15d30c51d5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
