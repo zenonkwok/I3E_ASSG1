@@ -1,3 +1,9 @@
+/*
+* Author: Kwok Ze Yong, Zenon
+* Date: 14 June 2025
+* Description: This script handles all behaviors of the player in the game. All interactions within the game are handled here as well as keeping track of the player's collectibles and health.
+*/
+
 using UnityEngine;
 using TMPro; // For TextMeshPro
 using System.Collections.Generic; // For Lists
@@ -53,13 +59,13 @@ public class PlayerBehavior : MonoBehaviour
     private float durationtTimer;
 
 
-
     // Lists to store keys and collectibles
     public List<string> Keys = new List<string>();
     public List<string> Collectibles = new List<string>();
 
     void Start()
     {
+        // Initializing UI elements
         pointsText.text = "Points: " + totalPoints.ToString();
         healthText.text = "Health: " + health.ToString();
         totalCollectiblesText.text = collectiblesCollected.ToString() + "/" + totalCollectibles.ToString();
@@ -69,69 +75,63 @@ public class PlayerBehavior : MonoBehaviour
         endingText.gameObject.SetActive(false);
     }
 
-    public void Popup(string uiText)
+    public void Popup(string uiText)    /// Script for displaying popup messages
     {
-        popupText.text = uiText;
+        popupText.text = uiText;    /// Setting the text of the popup
+
+        /// Activating the popup text and background
         popupText.gameObject.SetActive(true);
         popupBackground.gameObject.SetActive(true);
     }
 
-    void OnInteract()
+    void OnInteract()   /// Script for handling player interaction with objects
     {
-        if (canInteract)
+        if (canInteract)    /// Check if theres an object to interact with
         {
-            if (currentCollectible != null)
+            if (currentCollectible != null) /// Check if the focused object is a collectible
             {
-                Debug.Log("Interacting with collectible");
-                // Checking if collectible is a key
-                if (currentCollectible.collectibleType == "Key")
+                if (currentCollectible.collectibleType == "Key")    /// Checking if collectible is a key
                 {
-                    Keys.Add(currentCollectible.name);
-                    Debug.Log("Collected key: " + currentCollectible.name);
+                    Keys.Add(currentCollectible.name);  /// Adding the key to the player's keys list
                 }
-                else if (currentCollectible.collectibleType == "Collectible")
+                else if (currentCollectible.collectibleType == "Collectible")   /// Checking if collectible is a regular collectible
                 {
-                    Collectibles.Add(currentCollectible.name);
-                    Debug.Log("Collected collectible: " + currentCollectible.name);
+                    Collectibles.Add(currentCollectible.name);  /// Adding the collectible to the player's collectibles list
                 }
 
-                currentCollectible.Collect(this);
-                totalPoints += currentCollectible.value; // Assuming CollectibleBehavior has a value property
-                collectiblesCollected++;
-                pointsText.text = "Points: " + totalPoints.ToString();
-                totalCollectiblesText.text = collectiblesCollected.ToString() + "/" + totalCollectibles.ToString();
+                currentCollectible.Collect(this);   /// Collecting the collectible
+                totalPoints += currentCollectible.value; /// Adding the collectible's value to the player's total points
+                collectiblesCollected++;    /// Incrementing the number of collectibles collected
+                pointsText.text = "Points: " + totalPoints.ToString();  /// Updating the points text
+                totalCollectiblesText.text = collectiblesCollected.ToString() + "/" + totalCollectibles.ToString(); /// Updating the total collectibles text
 
-                if (collectiblesCollected >= totalCollectibles)
+                if (collectiblesCollected >= totalCollectibles) /// Check if all collectibles have been collected
                 {
-                    CompleteGame();
+                    CompleteGame(); /// Call the script to complete the game
                 }
             }
-            else if (currentDoor != null)
+            else if (currentDoor != null)   /// Check if the focused object is a door
             {
-                Debug.Log("Interacting with door");
-                currentDoor.Interact();
+                currentDoor.Interact(); /// Interact with the door
             }
 
-            else if (currentCannon != null)
+            else if (currentCannon != null) /// Check if the focused object is a cannon
             {
-                Debug.Log("Firing Cannon");
-                currentCannon.Fire();
+                currentCannon.Fire();   /// Fire the cannon
             }
-            else if (currentDestroyable != null)
+            else if (currentDestroyable != null)    /// Check if the focused object is a destroyable object
             {
-                Debug.Log("Destroying object");
-                currentDestroyable.DestroyObject();
+                currentDestroyable.DestroyObject(); /// Destroy the object
             }
-            else if (currentRoundtable != null)
+            else if (currentRoundtable != null) /// Check if the focused object is a roundtable
             {
-                Debug.Log("Interacting with roundtable");
-                if (currentRoundtable.items_Placed)
+                if (currentRoundtable.items_Placed) /// Checking if the items have already been placed on the roundtable
                 {
-                    currentRoundtable.Summon();
+                    currentRoundtable.Summon(); /// Summon the object if items have been placed
                 }
                 else
                 {
-                    currentRoundtable.PlaceItems(this);
+                    currentRoundtable.PlaceItems(this); /// Place items on the roundtable
                 }
 
             }
@@ -139,28 +139,27 @@ public class PlayerBehavior : MonoBehaviour
 
     }
 
-    public void HazardDamage(int DamageAmount)
+    public void HazardDamage(int DamageAmount)  /// Script for applying damage to the player from hazards
     {
-        health += DamageAmount;
-        healthText.text = "Health: " + health.ToString();
-        durationtTimer = 0;
-        overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 1);
-        if (health <= 0)
+        health += DamageAmount; /// Apply the damage amount to the player's health
+        healthText.text = "Health: " + health.ToString();   /// Update the health text
+
+        durationtTimer = 0; /// Reset the timer for the damage overlay
+        overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, 1);    /// Set the overlay color to be fully opaque
+
+        if (health <= 0)    /// Checking if the player has died
         {
-            Debug.Log("Player has died");
-            health = 0; // Ensure that health does not go below 0
-            Respawn();
+            health = 0; /// Ensuring that health does not go below 0
+            Respawn();  /// Call the respawn script
         }
     }
 
-    void Respawn()
+    void Respawn()  /// Script for respawning the player after death
     {
-        health = maxHealth; // Reset health to maximum
-        healthText.text = "Health: " + health.ToString();
-        Debug.Log("Respawning player at respawn point"); 
-        //transform.position = respawnPoint.position; // Reset player position to spawn point
+        health = maxHealth; /// Reset health to maximum
+        healthText.text = "Health: " + health.ToString();   /// Update the health text
 
-        var controller = GetComponent<CharacterController>();
+        var controller = GetComponent<CharacterController>();   /// Section for ensuring the player respawns at the respawn point
         if (controller != null)
         {
             controller.enabled = false;
@@ -169,45 +168,46 @@ public class PlayerBehavior : MonoBehaviour
         }
         else
         {
-            transform.position = respawnPoint.position;
+            transform.position = respawnPoint.position; /// Directly set the respawn position if theres no need for CharacterController
         }
 
-        deathCount++;
+        deathCount++;   /// Increment the death count
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other) /// Script for detecting when the player enters a hazard zone
     {
-        if (other.CompareTag("Hazard"))
+        if (other.CompareTag("Hazard")) /// Checking that it is a hazard
         {
             HazardBehavior hazard = other.GetComponent<HazardBehavior>();
-            if (hazard != null && health > 0)
+            if (hazard != null && health > 0)   /// Checking if there is a hazard and if the player is alive
             {
-                Debug.Log("Player has entered hazard zone");
-                currentHazard = hazard;
-                hazard.StartHazardDamage(this);
+                currentHazard = hazard; /// Set the current hazard
+                hazard.StartHazardDamage(this); /// Start the hazard damage coroutine
             }
         }
     }
 
-    void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)  /// Script for detecting when the player exits a hazard zone
     {
-        if (other.CompareTag("Hazard"))
+        if (other.CompareTag("Hazard")) /// Checking that it is a hazard
         {
             HazardBehavior hazard = other.GetComponent<HazardBehavior>();
-            if (hazard != null)
+            if (hazard != null) /// Checking if there is a hazard
             {
-                Debug.Log("Player has exited hazard zone");
-                currentHazard = null;
-                hazard.StopHazardDamage();
+                currentHazard = null;   /// Resetting the current hazard
+                hazard.StopHazardDamage();  /// Stop the hazard damage coroutine
             }
         }
     }
 
-    void CompleteGame()
+    void CompleteGame() /// Script for completing the game
     {
+        /// Setting ending UI elements to active
         endingScreen.gameObject.SetActive(true);
         endingText.gameObject.SetActive(true);
-        endingText.text = "Congratulations! You have completed the game.\n" + "Total Deaths: " + deathCount.ToString();
+        endingText.text = "Congratulations! You have completed the game.\n \n" + "Total Deaths: " + deathCount.ToString();  /// Displaying the ending message with total deaths
+
+        /// Deactivating popup text for safety
         popupBackground.gameObject.SetActive(false);
         popupText.gameObject.SetActive(false);
     }
@@ -216,55 +216,55 @@ public class PlayerBehavior : MonoBehaviour
     {
         // Raycasting Script
         RaycastHit hitInfo;
-        Debug.DrawRay(spawnPoint.position, spawnPoint.forward * interactionDistance, Color.red);
+        Debug.DrawRay(spawnPoint.position, spawnPoint.forward * interactionDistance, Color.red);    /// Raycast visualisation in editor
 
-        if (Physics.Raycast(spawnPoint.position, spawnPoint.forward, out hitInfo, interactionDistance))
+        if (Physics.Raycast(spawnPoint.position, spawnPoint.forward, out hitInfo, interactionDistance)) /// Checking if the raycast has hit an object within interaction distance
         {
-            if (currentCollectible != null)
+            if (currentCollectible != null) /// Checking if there is a collectible currently highlighted
             {
-                currentCollectible.Unhighlight();
+                currentCollectible.Unhighlight();   /// Unhighlight the previous collectible
                 currentCollectible = null;
             }
 
-            if (hitInfo.collider.gameObject.CompareTag("Collectible"))
+            if (hitInfo.collider.gameObject.CompareTag("Collectible"))  /// Checking if the object is a collectible
             {
                 currentCollectible = hitInfo.collider.GetComponent<CollectibleBehavior>();
                 if (currentCollectible != null)
                 {
-                    currentCollectible.Highlight();
+                    currentCollectible.Highlight(); /// Highlight the collectible
                 }
-                canInteract = true;
-                Popup("Press E to collect: " + currentCollectible.name);
+                canInteract = true; /// Set canInteract to true for the collectible
+                Popup("Press E to collect: " + currentCollectible.name);    /// Displaying the popup message for the collectible
 
             }
-            else if (hitInfo.collider.CompareTag("Door"))
+            else if (hitInfo.collider.CompareTag("Door"))   /// Checking if the object is a door
             {
                 currentDoor = hitInfo.collider.GetComponent<DoorBehavior>();
-                canInteract = true;
+                canInteract = true; /// Set canInteract to true for the door
             }
-            else if (hitInfo.collider.CompareTag("Cannon"))
+            else if (hitInfo.collider.CompareTag("Cannon")) /// Checking if the object is a cannon
             {
                 currentCannon = hitInfo.collider.GetComponent<CannonBehavior>();
-                canInteract = true;
+                canInteract = true; /// Set canInteract to true for the cannon
             }
-            else if (hitInfo.collider.CompareTag("Destroyable"))
+            else if (hitInfo.collider.CompareTag("Destroyable"))    /// Checking if the object is destroyable
             {
                 currentDestroyable = hitInfo.collider.GetComponent<DestroyableBehavior>();
-                canInteract = true;
-                Popup("Press E to destroy this object.");
+                canInteract = true; /// Set canInteract to true for the destroyable object
+                Popup("Press E to destroy this object.");   /// Displaying the popup message for the destroyable object
             }
-            else if (hitInfo.collider.CompareTag("Roundtable"))
+            else if (hitInfo.collider.CompareTag("Roundtable")) /// Checking if the object is a roundtable
             {
                 currentRoundtable = hitInfo.collider.GetComponent<RoundtableBehavior>();
-                canInteract = true;
-                //Popup("Press E to place down items.");
+                canInteract = true; /// Set canInteract to true for the roundtable
             }
-            else if (hitInfo.collider.CompareTag("Warning") && !Collectibles.Contains("magic_Ring"))
+            else if (hitInfo.collider.CompareTag("Warning") && !Collectibles.Contains("magic_Ring"))    /// Checking if it is a warning area and if the player has the required item
             {
-                Popup("Warning: Toxic Waste Ahead. You need a magic_Ring to proceed safely.");
+                Popup("Warning: Toxic Waste Ahead. You need a magic_Ring to proceed safely.");  /// Displaying the warning message
             }
             else
             {
+                /// Resetting all interactable objects if the raycast hits something else
                 currentCollectible = null;
                 currentDoor = null;
                 currentCannon = null;
@@ -277,6 +277,7 @@ public class PlayerBehavior : MonoBehaviour
         }
         else
         {
+            /// Resetting all interactable objects if the raycast does not hit anything
             currentCollectible = null;
             currentDoor = null;
             currentCannon = null;
@@ -289,15 +290,14 @@ public class PlayerBehavior : MonoBehaviour
 
 
         // Damage Overlay Fade out Script
-        if (overlay.color.a > 0)    
+        if (overlay.color.a > 0)    /// If the overlay is visible
         {
-            durationtTimer += Time.deltaTime;
-            if (durationtTimer > duration)
+            durationtTimer += Time.deltaTime;   /// Initializing the timer for the overlay fade out
+            if (durationtTimer > duration)  /// Checking if the duration has passed
             {
-                float tempAlpha = overlay.color.a;
+                float tempAlpha = overlay.color.a;  /// Using deltaTime timer to fade out the overlay smoothly
                 tempAlpha -= Time.deltaTime * fadeSpeed;
-                overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, tempAlpha);
-                popupText.gameObject.SetActive(false);
+                overlay.color = new Color(overlay.color.r, overlay.color.g, overlay.color.b, tempAlpha);    /// Fading out the overlay
             }
         }
     }
